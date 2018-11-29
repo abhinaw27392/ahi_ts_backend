@@ -1,0 +1,1 @@
+xcopy  E:\AHI_TimeSheet\sanjana_ahi_timesheet\AHI_Timesheet\build  E:\AHI_TimeSheet\ahits_backend\src\main\resources\public /E
