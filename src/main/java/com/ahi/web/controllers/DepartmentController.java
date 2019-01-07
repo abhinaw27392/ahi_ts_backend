@@ -46,9 +46,9 @@ public class DepartmentController {
 			Principal principal) throws Exception {
 		try {
 			if (DepartmentsModel.getDepartmentId() == null || DepartmentsModel.getDepartmentId() == 0)
-				DepartmentsModel = departmentService.addDepartment(DepartmentsModel);
+				DepartmentsModel = departmentService.addDepartment(DepartmentsModel, principal);
 			else
-				DepartmentsModel = departmentService.updateDepartment(DepartmentsModel);
+				DepartmentsModel = departmentService.updateDepartment(DepartmentsModel, principal);
 		} catch (AHCustomException e) {
 			throw new WebServerException(e.getErrorMessage(), e);
 		}

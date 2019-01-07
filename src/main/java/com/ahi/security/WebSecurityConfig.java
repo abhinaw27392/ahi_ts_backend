@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.env.Environment;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -28,22 +29,24 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
 	@Autowired
 	private AuthenticationFailureHandler authenticationFailureHandler;
+	
+	@Autowired
+    private Environment environment;
 
 	@Bean
 	public BCryptPasswordEncoder bCryptPasswordEncoder() {
 		return new BCryptPasswordEncoder();
 	}
-	
-	//------------------------------------------------------------------added-----------------------------------
+
+	// ------------------------------------------------------------------added-----------------------------------
 	@Bean
 	public FilterRegistrationBean registration(CORSServletFilter filter) {
 		System.out.println("adding 2");
-	  FilterRegistrationBean registration = new FilterRegistrationBean(filter);
-	  registration.setEnabled(true);
-	  return registration;
-	} 
-	
-	
+		FilterRegistrationBean registration = new FilterRegistrationBean(filter);
+		registration.setEnabled(true);
+		return registration;
+	}
+
 	@Bean
 	public CorsConfigurationSource corsConfigurationSource() {
 		System.out.println("Configuring filters");
@@ -56,13 +59,15 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 		source.registerCorsConfiguration("/**", configuration);
 		return source;
 	}
-//-----------------------------------------------------------------------------------------------------------------
+
+	// -----------------------------------------------------------------------------------------------------------------
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
-		http.authorizeRequests().antMatchers("/rest/**").authenticated();
-		http.csrf().disable();
-		http.exceptionHandling().authenticationEntryPoint(authenticationEntryPoint);
-		http.formLogin().failureHandler(authenticationFailureHandler);
+
+		 http.authorizeRequests().antMatchers("/rest/**").authenticated();
+		 http.csrf().disable();
+		 http.exceptionHandling().authenticationEntryPoint(authenticationEntryPoint);
+		 http.formLogin().failureHandler(authenticationFailureHandler);
 	}
 
 	@Autowired

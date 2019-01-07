@@ -1,5 +1,6 @@
 package com.ahi.service.impl;
 
+import java.security.Principal;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -29,12 +30,13 @@ public class DepartmentServiceImpl implements DepartmentService {
 	private UserRepository ahiUserRepository;
 
 	@Override
-	public DepartmentsModel addDepartment(DepartmentsModel dm) throws AHCustomException {
+	public DepartmentsModel addDepartment(DepartmentsModel dm, Principal principal) throws AHCustomException {
 		try {
 			AhiDepartments departments = new AhiDepartments();
 			departments.setDepartmentName(dm.getDepartmentName());
 			departments.setDepartmentDescription(dm.getDepartmentDescription());
 			departments.setHeadedByUser(ahiUserRepository.findById(dm.getHeadedByUserId()).get());
+			departments.setWhoUpdated(principal.getName());
 			departmentsRepository.save(departments);
 			dm.setDepartmentId(departments.getDepartmentId());
 			return dm;
@@ -62,7 +64,7 @@ public class DepartmentServiceImpl implements DepartmentService {
 	}
 
 	@Override
-	public DepartmentsModel updateDepartment(DepartmentsModel dm) throws AHCustomException {
+	public DepartmentsModel updateDepartment(DepartmentsModel dm, Principal principal) throws AHCustomException {
 		try {
 			AhiDepartments department = departmentsRepository.findById(dm.getDepartmentId()).get();
 			if (department == null)
@@ -71,6 +73,7 @@ public class DepartmentServiceImpl implements DepartmentService {
 			department.setDepartmentName(dm.getDepartmentName());
 			department.setDepartmentDescription(dm.getDepartmentDescription());
 			department.setHeadedByUser(ahiUserRepository.findById(dm.getHeadedByUserId()).get());
+			department.setWhoUpdated(principal.getName());
 			departmentsRepository.save(department);
 			return dm;
 		} catch (Exception e) {

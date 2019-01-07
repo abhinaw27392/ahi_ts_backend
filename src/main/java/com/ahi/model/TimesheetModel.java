@@ -15,6 +15,7 @@ public class TimesheetModel implements Serializable {
 	private Integer totalHours;
 	private String projectName;
 	private String taskName;
+	private String taskDesc;
 
 	public Integer getId() {
 		return id;
@@ -79,5 +80,13 @@ public class TimesheetModel implements Serializable {
 
 	public void setEmpId(Integer empId) {
 		this.empId = empId;
+	}
+
+	public String getTaskDesc() {
+		return taskDesc;
+	}
+
+	public void setTaskDesc(String taskDesc) {
+		this.taskDesc = taskDesc;
 	}
 }

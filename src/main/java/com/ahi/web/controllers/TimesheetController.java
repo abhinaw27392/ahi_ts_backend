@@ -44,9 +44,9 @@ public class TimesheetController {
 		try {
 			for (TimesheetModel tm : tms) {
 				if (tm.getId() == null || tm.getId() == 0)
-					tm = timesheetService.addTimesheet(tm);
+					tm = timesheetService.addTimesheet(tm, principal);
 				else {
-					tm = timesheetService.updateTimesheet(tm);
+					tm = timesheetService.updateTimesheet(tm, principal);
 				}
 					
 			}

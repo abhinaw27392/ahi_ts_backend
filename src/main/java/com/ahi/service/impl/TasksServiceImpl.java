@@ -1,5 +1,6 @@
 package com.ahi.service.impl;
 
+import java.security.Principal;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -29,12 +30,13 @@ public class TasksServiceImpl implements TasksService {
 	private UserRepository ahiUserRepository;
 
 	@Override
-	public TasksModel addTask(TasksModel tm) throws AHCustomException {
+	public TasksModel addTask(TasksModel tm, Principal principal) throws AHCustomException {
 		try {
 			AhiTasks tasks = new AhiTasks();
 			tasks.setTaskName(tm.getTaskName());
 			tasks.setTaskDescription(tm.getTaskDescription());
 			tasks.setUser(ahiUserRepository.findById(tm.getUserId()).get());
+			tasks.setWhoUpdated(principal.getName());
 			tasksRepository.save(tasks);
 			tm.setTaskId(tasks.getTaskId());
 			return tm;
@@ -62,7 +64,7 @@ public class TasksServiceImpl implements TasksService {
 	}
 
 	@Override
-	public TasksModel updateTask(TasksModel tm) throws AHCustomException {
+	public TasksModel updateTask(TasksModel tm, Principal principal) throws AHCustomException {
 		try {
 			AhiTasks task = tasksRepository.findById(tm.getTaskId()).get();
 			if (task == null)
@@ -71,6 +73,7 @@ public class TasksServiceImpl implements TasksService {
 			task.setTaskName(tm.getTaskName());
 			task.setTaskDescription(tm.getTaskDescription());
 			task.setUser(ahiUserRepository.findById(tm.getUserId()).get());
+			task.setWhoUpdated(principal.getName());
 			tasksRepository.save(task);
 			return tm;
 		} catch (Exception e) {

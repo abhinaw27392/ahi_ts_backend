@@ -51,6 +51,7 @@ dependencies {
 	compile('org.springframework.boot:spring-boot-starter-security')
 	compile('org.springframework.boot:spring-boot-starter-web')
 	compile 'mysql:mysql-connector-java'
+	compile 'com.github.ulisesbocchio:jasypt-spring-boot-starter:1.18'
 	
 }
 

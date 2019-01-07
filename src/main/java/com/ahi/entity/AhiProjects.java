@@ -27,8 +27,22 @@ public class AhiProjects {
 	@OneToOne(optional = true)
 	@JoinColumn(name = "headed_by_user_id", referencedColumnName = "user_id")
 	private AhiUser headedByUser;
+	
+	@OneToOne(optional = true)
+	@JoinColumn(name = "client_id", referencedColumnName = "client_id")
+	private AhiClients ahiClients;
+	
+	@Column(name = "who_updated")
+	private String whoUpdated;
 
 
+	public AhiClients getAhiClients() {
+		return ahiClients;
+	}
+
+	public void setAhiClients(AhiClients ahiClients) {
+		this.ahiClients = ahiClients;
+	}
 
 	public Integer getProjectId() {
 		return projectId;
@@ -61,6 +75,14 @@ public class AhiProjects {
 		this.headedByUser = headedByUser;
 	}
 
+
+	public String getWhoUpdated() {
+		return whoUpdated;
+	}
+
+	public void setWhoUpdated(String whoUpdated) {
+		this.whoUpdated = whoUpdated;
+	}
 
 	@Override
 	public int hashCode() {

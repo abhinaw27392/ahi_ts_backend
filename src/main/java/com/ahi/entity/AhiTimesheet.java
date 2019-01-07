@@ -29,7 +29,10 @@ public class AhiTimesheet {
 
 	@ManyToOne
 	@JoinColumn(name = "project_id")
-	AhiProjects project;	
+	AhiProjects project;
+	
+	@Column(name = "task_desc")
+	private String taskDesc;
 	
 	@Temporal(TemporalType.DATE)
 	@Column(name = "date")
@@ -40,6 +43,9 @@ public class AhiTimesheet {
 
 	@Column(name = "emp_id")
 	private Integer empId;
+	
+	@Column(name = "who_updated")
+	private String whoUpdated;
 
 	public Integer getId() {
 		return id;
@@ -87,6 +93,22 @@ public class AhiTimesheet {
 
 	public void setEmpId(Integer empId) {
 		this.empId = empId;
+	}
+
+	public String getTaskDesc() {
+		return taskDesc;
+	}
+
+	public void setTaskDesc(String taskDesc) {
+		this.taskDesc = taskDesc;
+	}
+
+	public String getWhoUpdated() {
+		return whoUpdated;
+	}
+
+	public void setWhoUpdated(String whoUpdated) {
+		this.whoUpdated = whoUpdated;
 	}
 
 	@Override

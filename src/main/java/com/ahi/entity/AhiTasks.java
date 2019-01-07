@@ -27,6 +27,9 @@ public class AhiTasks {
 	@ManyToOne(optional = true)
 	@JoinColumn(name = "user_id", referencedColumnName = "user_id")
 	private AhiUser user;
+	
+	@Column(name = "who_updated")
+	private String whoUpdated;
 
 	public Integer getTaskId() {
 		return taskId;
@@ -58,6 +61,14 @@ public class AhiTasks {
 
 	public void setUser(AhiUser user) {
 		this.user = user;
+	}
+
+	public String getWhoUpdated() {
+		return whoUpdated;
+	}
+
+	public void setWhoUpdated(String whoUpdated) {
+		this.whoUpdated = whoUpdated;
 	}
 
 	@Override

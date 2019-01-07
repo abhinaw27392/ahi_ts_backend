@@ -1,5 +1,6 @@
 package com.ahi.service.impl;
 
+import java.security.Principal;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -11,9 +12,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.ahi.AHCustomException;
+import com.ahi.entity.AhiClients;
 import com.ahi.entity.AhiProjects;
 import com.ahi.entity.AhiUser;
 import com.ahi.model.ProjectsModel;
+import com.ahi.repository.ClientsRepository;
 import com.ahi.repository.ProjectsRepository;
 import com.ahi.repository.UserRepository;
 import com.ahi.service.ProjectService;
@@ -27,14 +30,19 @@ public class ProjectServiceImpl implements ProjectService {
 
 	@Autowired
 	private UserRepository ahiUserRepository;
+	
+	@Autowired
+	private ClientsRepository clientsRepository;
 
 	@Override
-	public ProjectsModel addProject(ProjectsModel pm) throws AHCustomException {
+	public ProjectsModel addProject(ProjectsModel pm, Principal principal) throws AHCustomException {
 		try {
 			AhiProjects projects = new AhiProjects();
 			projects.setProjectName(pm.getProjectName());
 			projects.setProjectDescription(pm.getProjectDescription());
 			projects.setHeadedByUser(ahiUserRepository.findById(pm.getHeadedByUserId()).get());
+			projects.setAhiClients(clientsRepository.findById(pm.getClientId()).get());
+			projects.setWhoUpdated(principal.getName());
 			projectsRepository.save(projects);
 			pm.setProjectId(projects.getProjectId());
 			return pm;
@@ -62,7 +70,7 @@ public class ProjectServiceImpl implements ProjectService {
 	}
 
 	@Override
-	public ProjectsModel updateProject(ProjectsModel pm) throws AHCustomException {
+	public ProjectsModel updateProject(ProjectsModel pm, Principal principal) throws AHCustomException {
 		try {
 			AhiProjects project = projectsRepository.findById(pm.getProjectId()).get();
 			if (project == null)
@@ -71,11 +79,13 @@ public class ProjectServiceImpl implements ProjectService {
 			project.setProjectName(pm.getProjectName());
 			project.setProjectDescription(pm.getProjectDescription());
 			project.setHeadedByUser(ahiUserRepository.findById(pm.getHeadedByUserId()).get());
+			project.setAhiClients(clientsRepository.findById(pm.getClientId()).get());
+			project.setWhoUpdated(principal.getName());
 			projectsRepository.save(project);
 			return pm;
 		} catch (Exception e) {
 			log.error("Error while adding Project");
-			throw new AHCustomException("Error while updating Project");
+			throw new AHCustomException("Error while updating Project" + e);
 		}
 	}
 
@@ -95,6 +105,11 @@ public class ProjectServiceImpl implements ProjectService {
 				if (headedByUser != null) {
 					pm.setHeadedByUserId(headedByUser.getId());
 					pm.setHeadedBy(String.format("%s %s", headedByUser.getFirstName(), headedByUser.getLastName()));
+				}
+				AhiClients ahiClients = project.getAhiClients();
+				if(ahiClients != null) {
+					pm.setClientId(ahiClients.getClientId());
+					pm.setClientName(ahiClients.getClientName());
 				}
 				models.add(pm);
 			}

@@ -16,9 +16,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.ahi.AHCustomException;
-import com.ahi.entity.AhiTasks;
 import com.ahi.entity.AhiUser;
-import com.ahi.model.TasksModel;
 import com.ahi.model.UserModel;
 import com.ahi.repository.UserRepository;
 import com.ahi.service.UserService;
@@ -203,5 +201,15 @@ public class UserServiceImpl implements UserService {
 			throw new AHCustomException("Error while updating user");
 		}
 	}
+	
+	@Override
+  public List<UserModel> searchUsers(String searchString) {
+    Iterator<AhiUser> users = ahiUserRepository.searchUsers(searchString).iterator();
+    List<UserModel> models = new ArrayList<UserModel>();
+    while (users.hasNext()) {
+      models.add(AhiTimeSheerUtil.getUserModel(users.next()));
+    }
+    return models;
+  }
 
 }

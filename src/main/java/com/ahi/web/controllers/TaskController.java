@@ -39,9 +39,9 @@ public class TaskController {
 			throws Exception {
 		try {
 			if (tasksModel.getTaskId() == null || tasksModel.getTaskId() == 0)
-				tasksModel = tasksService.addTask(tasksModel);
+				tasksModel = tasksService.addTask(tasksModel, principal);
 			else
-				tasksModel = tasksService.updateTask(tasksModel);
+				tasksModel = tasksService.updateTask(tasksModel, principal);
 		} catch (AHCustomException e) {
 			throw new WebServerException(e.getErrorMessage(), e);
 		}

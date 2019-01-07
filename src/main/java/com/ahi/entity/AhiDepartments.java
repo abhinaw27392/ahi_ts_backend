@@ -28,6 +28,9 @@ public class AhiDepartments {
 	@OneToOne(optional = true)
 	@JoinColumn(name = "headed_by_user_id", referencedColumnName = "user_id")
 	private AhiUser headedByUser;
+	
+	@Column(name = "who_updated")
+	private String whoUpdated;
 
 	public Integer getDepartmentId() {
 		return departmentId;
@@ -59,6 +62,14 @@ public class AhiDepartments {
 
 	public void setHeadedByUser(AhiUser headedByUser) {
 		this.headedByUser = headedByUser;
+	}
+
+	public String getWhoUpdated() {
+		return whoUpdated;
+	}
+
+	public void setWhoUpdated(String whoUpdated) {
+		this.whoUpdated = whoUpdated;
 	}
 
 	@Override

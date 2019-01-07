@@ -18,7 +18,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.ahi.AHCustomException;
-import com.ahi.entity.AhiUser;
 import com.ahi.model.TasksModel;
 import com.ahi.model.UserModel;
 import com.ahi.service.TasksService;
@@ -107,6 +106,11 @@ public class UserController {
 		}
 		return new ResponseEntity<UserModel>(userModel, HttpStatus.OK);
 	}
+	
+	@RequestMapping(value = "/search/{searchString}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+  public ResponseEntity<List<UserModel>> searchUsers(@PathVariable String searchString) {
+    return new ResponseEntity<List<UserModel>>(userService.searchUsers(searchString), HttpStatus.OK);
+	  }
 	
 	
 }

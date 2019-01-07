@@ -1,5 +1,7 @@
+
 package com.ahi.service.impl;
 
+import java.security.Principal;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Iterator;
@@ -40,14 +42,16 @@ public class TimesheetServiceImpl implements TimesheetService {
 	private TasksRepository tasksRepository;
 
 	@Override
-	public TimesheetModel addTimesheet(TimesheetModel tm) throws AHCustomException {
+	public TimesheetModel addTimesheet(TimesheetModel tm, Principal principal) throws AHCustomException {
 		try {
 			AhiTimesheet ts = new AhiTimesheet();
 			ts.setProject(projectsRepository.findById(tm.getProjectId()).get());
 			ts.setTask(tasksRepository.findById(tm.getTaskId()).get());
+			ts.setTaskDesc(tm.getTaskDesc());
 			ts.setDate(tm.getDate());
 			ts.setTotalHours(tm.getTotalHours());
 			ts.setEmpId(ahiUserRepository.findById(tm.getEmpId()).get().getId());
+			ts.setWhoUpdated(principal.getName());
 			timesheetRepository.save(ts);
 			tm.setId(ts.getId());
 			return tm;
@@ -58,16 +62,18 @@ public class TimesheetServiceImpl implements TimesheetService {
 	}
 
 	@Override
-	public TimesheetModel updateTimesheet(TimesheetModel tm) throws AHCustomException {
+	public TimesheetModel updateTimesheet(TimesheetModel tm, Principal principal) throws AHCustomException {
 		try {
 			AhiTimesheet ts = timesheetRepository.findById(tm.getId()).get();
 			if (ts == null)
 				throw new AHCustomException("Error wnile udpating timesheet.. No record found for id:::" + tm.getId());
 			ts.setProject(projectsRepository.findById(tm.getProjectId()).get());
 			ts.setTask(tasksRepository.findById(tm.getTaskId()).get());
+			ts.setTaskDesc(tm.getTaskDesc());
 			ts.setDate(tm.getDate());
 			ts.setTotalHours(tm.getTotalHours());
 			ts.setEmpId(ahiUserRepository.findById(tm.getEmpId()).get().getId());
+			ts.setWhoUpdated(principal.getName());
 			timesheetRepository.save(ts);
 			return tm;
 		} catch (Exception e) {
@@ -92,6 +98,7 @@ public class TimesheetServiceImpl implements TimesheetService {
 				tsm.setProjectName(ts.getProject().getProjectName());
 				tsm.setTaskId(ts.getTask().getTaskId());
 				tsm.setTaskName(ts.getTask().getTaskName());
+				tsm.setTaskDesc(ts.getTaskDesc());
 				tsm.setDate(ts.getDate());
 				tsm.setTotalHours(ts.getTotalHours());
 				models.add(tsm);

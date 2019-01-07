@@ -2,6 +2,8 @@ package com.ahi.model;
 
 import java.io.Serializable;
 
+import com.ahi.entity.AhiClients;
+
 public class ProjectsModel implements Serializable {
 
 	private static final long serialVersionUID = 1L;
@@ -11,6 +13,26 @@ public class ProjectsModel implements Serializable {
 	private String projectDescription;
 	private Integer headedByUserId;
 	private String headedBy;
+	private Integer clientId;
+	private String clientName;
+
+
+
+	public String getClientName() {
+		return clientName;
+	}
+
+	public void setClientName(String clientName) {
+		this.clientName = clientName;
+	}
+
+	public Integer getClientId() {
+		return clientId;
+	}
+
+	public void setClientId(Integer clientId) {
+		this.clientId = clientId;
+	}
 
 	public Integer getProjectId() {
 		return projectId;
@@ -51,5 +73,6 @@ public class ProjectsModel implements Serializable {
 	public void setHeadedBy(String headedBy) {
 		this.headedBy = headedBy;
 	}
+
 
 }
